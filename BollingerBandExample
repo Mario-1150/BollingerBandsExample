@@ -1,0 +1,33 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+f_p = r"____________________"
+df = pd.read_csv(f_p)
+print(df)
+
+print(df['Date'])
+
+#Calculating a 20-Day SMA
+df['Moving Average 20-Day'] = df['Close'].rolling(window = 20).mean()
+
+df['Standard Deviation'] = df['Close'].rolling(window = 20).std()
+
+#Calculating Upper & Lower Bollinger Bands
+df['Upper Band'] = df['Moving Average 20-Day'] + (df['Standard Deviation'] * 2)
+df['Lower Band'] = df['Moving Average 20-Day'] - (df['Standard Deviation'] * 2)
+
+plt.plot(df.index, df['Upper Band'], label = 'Upper Band (Resistance)', color = 'blue', linestyle = 'solid')
+plt.plot(df.index, df['Lower Band'], label = 'Lower Band (Support)', color = 'blue', linestyle = 'solid')
+
+#Filling the boundary with a shade of grey
+plt.fill_between(df.index, df['Lower Band'], df['Upper Band'], alpha = 0.1, color = 'grey')
+
+plt.title('Bollinger Bands for RTX Stock')
+plt.xlabel('Date\n Range: 8/1/2022 - 7/28/2023 for a total of 250 Days')
+plt.ylabel('Price')
+plt.legend()
+plt.grid(True)
+
+plt.show()
