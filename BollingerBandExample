@@ -9,15 +9,17 @@ print(df)
 
 print(df['Date'])
 
-#Calculating a 20-Day SMA
+#Calculating a 20-Day SMA which is done through a rolling window of 20 down the column of "Close"
 df['Moving Average 20-Day'] = df['Close'].rolling(window = 20).mean()
 
+#We pull the same Standard Deviation calculations for "Close"
 df['Standard Deviation'] = df['Close'].rolling(window = 20).std()
 
 #Calculating Upper & Lower Bollinger Bands
 df['Upper Band'] = df['Moving Average 20-Day'] + (df['Standard Deviation'] * 2)
 df['Lower Band'] = df['Moving Average 20-Day'] - (df['Standard Deviation'] * 2)
 
+#Begin plotting the correct data 
 plt.plot(df.index, df['Upper Band'], label = 'Upper Band (Resistance)', color = 'blue', linestyle = 'solid')
 plt.plot(df.index, df['Lower Band'], label = 'Lower Band (Support)', color = 'blue', linestyle = 'solid')
 
